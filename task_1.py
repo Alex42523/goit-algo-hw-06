@@ -9,7 +9,7 @@ class Field:
         return str(self.value)
 
 class Name(Field):
-    pass  # Додаткових реалізацій не потрібно, оскільки просто наслідуємо Field
+    pass
 
 class Phone(Field):
     def __init__(self, value):
@@ -38,8 +38,10 @@ class Record:
         raise ValueError("Телефон не знайдено.")
 
     def edit_phone(self, old_number, new_number):
-        self.remove_phone(old_number)
-        self.add_phone(new_number)
+        try:
+            new_phone = Phone(new_number)
+        except ValueError:
+            raise ValueError("Новий номер телефону невалідний.")
 
     def find_phone(self, phone_number):
         for phone in self.phones:
@@ -67,7 +69,7 @@ class AddressBook(UserDict):
 if __name__ == "__main__":
     book = AddressBook()
     john_record = Record("John")
-    john_record.add_phone("1234567890")
+    john_record.add_phone("1234567891")
     john_record.add_phone("5555555555")
     book.add_record(john_record)
     jane_record = Record("Jane")
@@ -75,13 +77,13 @@ if __name__ == "__main__":
     book.add_record(jane_record)
     print(book)
     john = book.find("John")
-    john.edit_phone("1234567890", "1112223333")
+    john.edit_phone("1234567891", "1112223335")
     print(john)
     found_phone = john.find_phone("5555555555")
-    print(f"{john.name}: {found_phone}")  # Виведення: John: 5555555555
+    print(f"{john.name}: {found_phone}")
 
-    # Видалення запису Jane
+
     book.delete("Jane")
 
-    # Виведення всіх записів у книзі після видалення Jane
+
     print(book)
