@@ -42,6 +42,8 @@ class Record:
             new_phone = Phone(new_number)
         except ValueError:
             raise ValueError("Новий номер телефону невалідний.")
+        self.remove_phone(old_number)
+        self.add_phone(new_number)
 
     def find_phone(self, phone_number):
         for phone in self.phones:
